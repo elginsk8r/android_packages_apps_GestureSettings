@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="touchscreen_gesture_settings"
+        android:title="@string/touchscreen_gesture_settings_title">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="touchscreen_gesture_haptic_feedback"
+        android:summary="@string/touchscreen_gestures_haptic_feedback_summary"
+        android:title="@string/touchscreen_gestures_haptic_feedback_title" />
+
+</PreferenceScreen>
