@@ -9,7 +9,6 @@ import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.evervolv.internal.util.ResourceUtils
 import org.lineageos.gestures.GestureConstants.ACTION_CAMERA
 import org.lineageos.gestures.GestureConstants.ACTION_FLASHLIGHT
 import org.lineageos.gestures.GestureConstants.ACTION_BROWSER
@@ -63,8 +62,10 @@ class GestureSettingsFragment : PreferenceFragmentCompat(), Preference.OnPrefere
             setSummary("%s")
             setDialogTitle(R.string.touchscreen_gesture_action_dialog_title)
             setTitle(
-                ResourceUtils.getLocalizedString(
-                    context.resources, gesture.name, TOUCHSCREEN_GESTURE_TITLE
+                GestureConstants.getLocalizedString(
+                    context,
+                    gesture.name,
+                    TOUCHSCREEN_GESTURE_TITLE
                 )
             )
         }

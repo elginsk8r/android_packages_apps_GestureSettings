@@ -89,4 +89,21 @@ object GestureConstants {
         intent.setFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY)
         context.sendBroadcastAsUser(intent, android.os.Process.myUserHandle())
     }
+
+    fun getLocalizedString(
+        context: Context,
+        name: String,
+        format: String
+    ): String {
+        return context.resources.getIdentifier(
+            String.format(format, name.toLowerCase().replace(" ", "_"),
+            "string",
+            context.packageName
+        ) .takeIf { it != 0 } ?.let(
+            context.resources.getString(it)
+        ) ?: run {
+            Log.e(TAG, "No resource found for $name")
+            name
+        }
+    }
 }
