@@ -39,22 +39,7 @@ import android.view.Display
 import android.view.KeyEvent
 import com.android.internal.os.DeviceKeyHandler
 import evervolv.provider.EVSettings
-import org.lineageos.gestures.GestureConstants.ACTION_CAMERA
-import org.lineageos.gestures.GestureConstants.ACTION_FLASHLIGHT
-import org.lineageos.gestures.GestureConstants.ACTION_BROWSER
-import org.lineageos.gestures.GestureConstants.ACTION_DIALER
-import org.lineageos.gestures.GestureConstants.ACTION_EMAIL
-import org.lineageos.gestures.GestureConstants.ACTION_MESSAGES
-import org.lineageos.gestures.GestureConstants.ACTION_NOTHING
-import org.lineageos.gestures.GestureConstants.ACTION_PLAY_PAUSE_MUSIC
-import org.lineageos.gestures.GestureConstants.ACTION_PREVIOUS_TRACK
-import org.lineageos.gestures.GestureConstants.ACTION_NEXT_TRACK
-import org.lineageos.gestures.GestureConstants.ACTION_VOLUME_DOWN
-import org.lineageos.gestures.GestureConstants.ACTION_VOLUME_UP
-import org.lineageos.gestures.GestureConstants.KEY_TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK
-import org.lineageos.gestures.GestureConstants.UPDATE_EXTRA_ACTION_MAPPING
-import org.lineageos.gestures.GestureConstants.UPDATE_EXTRA_KEYCODE_MAPPING
-import org.lineageos.gestures.GestureConstants.UPDATE_PREFS_ACTION
+import org.lineageos.gestures.GestureConstants
 
 import com.evervolv.platform.internal.R.bool.config_proximityCheckOnWake
 import com.evervolv.platform.internal.R.bool.config_proximityCheckOnWakeEnabledByDefault
@@ -87,6 +72,10 @@ class GestureHandler(private val context: Context) : DeviceKeyHandler {
     private val keyCodeActions = SparseIntArray()
     private var torchEnabled = false
 
+    private val packageContext = context.createPackageContext(
+        GestureHandler::class.java.getPackage()!!.name, 0
+    )
+
     private val sharedPreferences
         get() = packageContext.getSharedPreferences(
             packageContext.packageName + "_preferences",
@@ -95,8 +84,12 @@ class GestureHandler(private val context: Context) : DeviceKeyHandler {
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val keycodes = intent.getIntArrayExtra(UPDATE_EXTRA_KEYCODE_MAPPING)
-            val actions = intent.getIntArrayExtra(UPDATE_EXTRA_ACTION_MAPPING)
+            val keycodes = intent.getIntArrayExtra(
+                GestureConstants.UPDATE_EXTRA_KEYCODE_MAPPING
+            )
+            val actions = intent.getIntArrayExtra(
+                GestureConstants.UPDATE_EXTRA_ACTION_MAPPING
+            )
         
             keyCodeActions.clear()
         
@@ -111,7 +104,7 @@ class GestureHandler(private val context: Context) : DeviceKeyHandler {
     init {
         context.registerReceiver(
             broadcastReceiver,
-            IntentFilter(UPDATE_PREFS_ACTION),
+            IntentFilter(GestureConstants.UPDATE_PREFS_ACTION),
             Context.RECEIVER_NOT_EXPORTED
         )
         cameraManager.registerTorchCallback(
@@ -122,9 +115,9 @@ class GestureHandler(private val context: Context) : DeviceKeyHandler {
 
     override fun handleKeyEvent(event: KeyEvent): KeyEvent? {
         val action = keyCodeActions.get(event.getScanCode(), -1)
-        if (action < ACTION_NOTHING || event.action != KeyEvent.ACTION_UP || !isSetupComplete()) {
+        if (action < GestureConstants.ACTION_NOTHING || event.action != KeyEvent.ACTION_UP || !isSetupComplete()) {
             return event
-        } else if (action == ACTION_NOTHING || eventHandler.hasMessages(GESTURE_REQUEST)) {
+        } else if (action == GestureConstants.ACTION_NOTHING || eventHandler.hasMessages(GESTURE_REQUEST)) {
             return null
         } else {
             var msg = eventHandler.obtainMessage(GESTURE_REQUEST)
@@ -194,17 +187,17 @@ class GestureHandler(private val context: Context) : DeviceKeyHandler {
     private inner class EventHandler(looper: Looper) : Handler(looper) {
         override fun handleMessage(msg: Message) {
             when (msg.arg1) {
-                ACTION_CAMERA -> launchCamera()
-                ACTION_FLASHLIGHT -> toggleFlashlight()
-                ACTION_BROWSER -> launchDefaultApp(Intent(Intent.ACTION_VIEW, Uri.parse("http:")))
-                ACTION_DIALER -> launchDefaultApp(Intent(Intent.ACTION_DIAL, null))
-                ACTION_EMAIL -> launchDefaultApp(Intent(Intent.ACTION_VIEW, Uri.parse("mailto:")))
-                ACTION_MESSAGES -> launchDefaultApp(Intent(Intent.ACTION_VIEW, Uri.parse("sms:")))
-                ACTION_PLAY_PAUSE_MUSIC -> handleMediaAction(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
-                ACTION_PREVIOUS_TRACK -> handleMediaAction(KeyEvent.KEYCODE_MEDIA_PREVIOUS)
-                ACTION_NEXT_TRACK -> handleMediaAction(KeyEvent.KEYCODE_MEDIA_NEXT)
-                ACTION_VOLUME_DOWN -> handleVolumeAction(AudioManager.ADJUST_LOWER)
-                ACTION_VOLUME_UP -> handleVolumeAction(AudioManager.ADJUST_RAISE)
+                GestureConstants.ACTION_CAMERA -> launchCamera()
+                GestureConstants.ACTION_FLASHLIGHT -> toggleFlashlight()
+                GestureConstants.ACTION_BROWSER -> launchDefaultApp(Intent(Intent.ACTION_VIEW, Uri.parse("http:")))
+                GestureConstants.ACTION_DIALER -> launchDefaultApp(Intent(Intent.ACTION_DIAL, null))
+                GestureConstants.ACTION_EMAIL -> launchDefaultApp(Intent(Intent.ACTION_VIEW, Uri.parse("mailto:")))
+                GestureConstants.ACTION_MESSAGES -> launchDefaultApp(Intent(Intent.ACTION_VIEW, Uri.parse("sms:")))
+                GestureConstants.ACTION_PLAY_PAUSE_MUSIC -> handleMediaAction(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
+                GestureConstants.ACTION_PREVIOUS_TRACK -> handleMediaAction(KeyEvent.KEYCODE_MEDIA_PREVIOUS)
+                GestureConstants.ACTION_NEXT_TRACK -> handleMediaAction(KeyEvent.KEYCODE_MEDIA_NEXT)
+                GestureConstants.ACTION_VOLUME_DOWN -> handleVolumeAction(AudioManager.ADJUST_LOWER)
+                GestureConstants.ACTION_VOLUME_UP -> handleVolumeAction(AudioManager.ADJUST_RAISE)
             }
         }
     }
@@ -297,7 +290,7 @@ class GestureHandler(private val context: Context) : DeviceKeyHandler {
 
     private fun doHapticFeedback() {
         if (!sharedPreferences.getBoolean(
-            KEY_TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK, true
+            GestureConstants.KEY_TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK, true
         )) {
             return
         }

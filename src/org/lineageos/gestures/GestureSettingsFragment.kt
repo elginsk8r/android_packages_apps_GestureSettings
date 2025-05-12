@@ -9,18 +9,7 @@ import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import org.lineageos.gestures.GestureConstants.ACTION_CAMERA
-import org.lineageos.gestures.GestureConstants.ACTION_FLASHLIGHT
-import org.lineageos.gestures.GestureConstants.ACTION_BROWSER
-import org.lineageos.gestures.GestureConstants.ACTION_DIALER
-import org.lineageos.gestures.GestureConstants.ACTION_EMAIL
-import org.lineageos.gestures.GestureConstants.ACTION_MESSAGES
-import org.lineageos.gestures.GestureConstants.ACTION_PLAY_PAUSE_MUSIC
-import org.lineageos.gestures.GestureConstants.ACTION_PREVIOUS_TRACK
-import org.lineageos.gestures.GestureConstants.ACTION_NEXT_TRACK
-import org.lineageos.gestures.GestureConstants.ACTION_VOLUME_DOWN
-import org.lineageos.gestures.GestureConstants.ACTION_VOLUME_UP
-import org.lineageos.gestures.GestureConstants.TOUCHSCREEN_GESTURE_TITLE
+import org.lineageos.gestures.GestureConstants
 import vendor.lineage.touch.V1_0.Gesture
 import vendor.lineage.touch.V1_0.ITouchscreenGesture
 
@@ -65,7 +54,7 @@ class GestureSettingsFragment : PreferenceFragmentCompat(), Preference.OnPrefere
                 GestureConstants.getLocalizedString(
                     context,
                     gesture.name,
-                    TOUCHSCREEN_GESTURE_TITLE
+                    GestureConstants.TOUCHSCREEN_GESTURE_TITLE
                 )
             )
         }
@@ -91,17 +80,17 @@ class GestureSettingsFragment : PreferenceFragmentCompat(), Preference.OnPrefere
 
         fun getIconDrawableResourceForAction(action: Int): Int {
             return when (action) {
-                ACTION_CAMERA -> R.drawable.ic_gesture_action_camera
-                ACTION_FLASHLIGHT -> R.drawable.ic_gesture_action_flashlight
-                ACTION_BROWSER -> R.drawable.ic_gesture_action_browser
-                ACTION_DIALER -> R.drawable.ic_gesture_action_dialer
-                ACTION_EMAIL -> R.drawable.ic_gesture_action_email
-                ACTION_MESSAGES -> R.drawable.ic_gesture_action_messages
-                ACTION_PLAY_PAUSE_MUSIC -> R.drawable.ic_gesture_action_play_pause
-                ACTION_PREVIOUS_TRACK -> R.drawable.ic_gesture_action_previous_track
-                ACTION_NEXT_TRACK -> R.drawable.ic_gesture_action_next_track
-                ACTION_VOLUME_DOWN -> R.drawable.ic_gesture_action_volume_down
-                ACTION_VOLUME_UP -> R.drawable.ic_gesture_action_volume_up
+                GestureConstants.ACTION_CAMERA -> R.drawable.ic_gesture_action_camera
+                GestureConstants.ACTION_FLASHLIGHT -> R.drawable.ic_gesture_action_flashlight
+                GestureConstants.ACTION_BROWSER -> R.drawable.ic_gesture_action_browser
+                GestureConstants.ACTION_DIALER -> R.drawable.ic_gesture_action_dialer
+                GestureConstants.ACTION_EMAIL -> R.drawable.ic_gesture_action_email
+                GestureConstants.ACTION_MESSAGES -> R.drawable.ic_gesture_action_messages
+                GestureConstants.ACTION_PLAY_PAUSE_MUSIC -> R.drawable.ic_gesture_action_play_pause
+                GestureConstants.ACTION_PREVIOUS_TRACK -> R.drawable.ic_gesture_action_previous_track
+                GestureConstants.ACTION_NEXT_TRACK -> R.drawable.ic_gesture_action_next_track
+                GestureConstants.ACTION_VOLUME_DOWN -> R.drawable.ic_gesture_action_volume_down
+                GestureConstants.ACTION_VOLUME_UP -> R.drawable.ic_gesture_action_volume_up
                 else -> R.drawable.ic_gesture_action_none
             }
         }
