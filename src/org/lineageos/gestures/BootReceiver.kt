@@ -7,10 +7,11 @@ package org.lineageos.gestures
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.ServiceManager
 import android.os.UserManager
 import android.util.Log
-import vendor.lineage.touch.V1_0.Gesture
-import vendor.lineage.touch.V1_0.ITouchscreenGesture
+import vendor.lineage.touch.Gesture
+import vendor.lineage.touch.ITouchscreenGesture
 import java.util.ArrayList
 
 object BootReceiver : BroadcastReceiver() {
@@ -24,7 +25,12 @@ object BootReceiver : BroadcastReceiver() {
         }
 
         runCatching {
-            val service: ITouchscreenGesture = ITouchscreenGesture.getService(false)
+            val service: ITouchscreenGesture =
+                ITouchscreenGesture.Stub.asInterface(
+                    ServiceManager.waitForDeclaredService(
+                        ITouchscreenGesture.DESCRIPTOR + "/default"
+                    )
+                )
             val gestures: ArrayList<Gesture> = service.supportedGestures
             val actionList: IntArray = GestureConstants.buildActionList(context, gestures)
             for (gesture in gestures) {

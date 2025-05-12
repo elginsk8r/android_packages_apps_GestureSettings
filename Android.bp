@@ -18,7 +18,7 @@ android_app {
         "androidx.preference_preference",
         "com.evervolv.platform.internal",
         "org.lineageos.settings.resources",
-        "vendor.lineage.touch-V1.0-java",
+        "vendor.lineage.touch-V1-java",
     ],
 
     optimize: {

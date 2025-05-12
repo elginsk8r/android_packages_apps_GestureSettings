@@ -6,12 +6,13 @@ package org.lineageos.gestures
 
 import android.content.Context
 import android.os.Bundle
+import android.os.ServiceManager
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.lineageos.gestures.GestureConstants
-import vendor.lineage.touch.V1_0.Gesture
-import vendor.lineage.touch.V1_0.ITouchscreenGesture
+import vendor.lineage.touch.Gesture
+import vendor.lineage.touch.ITouchscreenGesture
 
 class GestureSettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
@@ -19,7 +20,12 @@ class GestureSettingsFragment : PreferenceFragmentCompat(), Preference.OnPrefere
         addPreferencesFromResource(R.xml.gesture_settings)
         requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val service: ITouchscreenGesture = ITouchscreenGesture.getService(false)
+        val service: ITouchscreenGesture =
+            ITouchscreenGesture.Stub.asInterface(
+                ServiceManager.waitForDeclaredService(
+                    ITouchscreenGesture.DESCRIPTOR + "/default"
+                )
+            )
         val actions: IntArray =
             GestureConstants.getDefaultGestureActions(
                 requireContext(),

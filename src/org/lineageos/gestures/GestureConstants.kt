@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import vendor.lineage.touch.V1_0.Gesture
+import vendor.lineage.touch.Gesture
 
 object GestureConstants {
 
