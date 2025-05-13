@@ -323,7 +323,7 @@ class GestureHandler(private val context: Context) : DeviceKeyHandler {
 
     private fun getLaunchableIntent(intent: Intent): Intent? {
         val resInfo = context.packageManager.queryIntentActivities(
-            intent, 0
+            intent, PackageManager.ResolveInfoFlags.of(0)
         )
         return if (resInfo.isEmpty()) {
             null
